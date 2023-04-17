@@ -5,8 +5,8 @@ const bcrypt = require("bcrypt");
 
 exports.createUsers = async (req, res, next) => {
   try {
-    const existeuser = await User.find(req.body);
-    if (existeuser) {
+    const existeuser = await User.find({ email: req.body.email });
+    if (existeuser.length > 0) {
       return next(new AppError("Already user exist", 409));
     }
     const newUser = await User.create(req.body);
