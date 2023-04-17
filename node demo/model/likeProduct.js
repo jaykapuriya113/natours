@@ -1,25 +1,18 @@
 const mongoose = require("mongoose");
 
-const likeProductSchema = new mongoose.Schema({
-  liked: {
-    type: Boolean,
-    default: false,
-    enum: [true, false],
+const likeProductSchema = new mongoose.Schema(
+  {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    product_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+    },
   },
-  likesQuantity: {
-    type: Number,
-    default: 0,
-  },
-  //   product: {
-  //     type: mongoose.Schema.ObjectId,
-  //     ref: 'Product',
-  //   },
-  // createdAt: {
-  //   type: Date,
-  //   default: Date.now,
-  // },
-});
-
+  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+);
 const LikeProduct = mongoose.model("LikeProduct", likeProductSchema);
 
 module.exports = LikeProduct;
