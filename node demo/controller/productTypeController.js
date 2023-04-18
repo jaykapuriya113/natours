@@ -83,6 +83,6 @@ exports.updateProductType = async (req, res, next) => {
       },
     });
   } catch (err) {
-    return next(new AppError({ err }, 404));
+    return next(new AppError("Something went wrong", 404));
   }
 };

@@ -4,11 +4,17 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 exports.createUsers = async (req, res, next) => {
+  const { name, email, password, passwordConfirm } = req.body;
   try {
+    if (password.includes(" ")) {
+      return next(new AppError("avoiad all space"));
+    }
+
     const existeuser = await User.find({ email: req.body.email });
     if (existeuser.length > 0) {
       return next(new AppError("Already user exist", 409));
     }
+
     const newUser = await User.create(req.body);
     res.status(201).json({
       status: "success",
@@ -17,7 +23,11 @@ exports.createUsers = async (req, res, next) => {
       },
     });
   } catch (err) {
-    return next(new AppError(err, 400));
+    if (err.name == "ValidationError")
+      return next(new AppError(err.message, 404));
+    return next(
+      new AppError("ypur request is not fullfiled due to some error.", 404)
+    );
   }
 };
 exports.loginUser = async (req, res, next) => {
@@ -31,7 +41,6 @@ exports.loginUser = async (req, res, next) => {
       return next(new AppError("user not exist", 404));
     }
     const passwordexist = await bcrypt.compare(password, user.password);
-    console.log(passwordexist);
     if (passwordexist) {
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN,
@@ -62,6 +71,6 @@ exports.getAllUsers = async (req, res) => {
       },
     });
   } catch (err) {
-    return next(new AppError({ err }, 500));
+    return next(new AppError("data dose not exist", 500));
   }
 };

@@ -27,6 +27,7 @@ const countAge = asyncHandler(async () => {
       str = str + obj[i].key + "\n";
     }
   }
+  console.log(str);
 
   fs.writeFileSync("text.txt", str);
 

@@ -1,10 +1,4 @@
-///4
 
-// In the JavaScript file, you have a program that performs a GET request on the route
-//https://coderbyte.com/api/challenges/json/date-list and then create a new array of objects with a date property
-// and a value property with at least one item per day between the earliest and latest dates in the input array. If
-// there is no data for a particular day, the value should be 0.
-// Finally, console log an array of objects as a string.
 
 const axios = require('axios')
 

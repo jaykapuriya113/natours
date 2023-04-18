@@ -8,10 +8,16 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(upload.uploadUserPhoto, producutController.createProduct)
-  .get(producutController.getAllProduct);
+  .post(
+    authController.protect,
+    upload.uploadUserPhoto,
+    producutController.createProduct
+  )
+  .get(authController.protect, producutController.getAllProduct);
 
-router.route("/mostRecentProduct").get(producutController.mostRecentProduct);
+router
+  .route("/mostRecentProduct")
+  .get(authController.protect, producutController.mostRecentProduct);
 router
   .route("/mostLikedProduct")
   .get(authController.protect, likeController.MostLikedProduct);
@@ -20,9 +26,9 @@ router
   .post(authController.protect, commentController.comment);
 router
   .route("/:id")
-  .get(producutController.findProductById)
-  .patch(producutController.updateProduct)
-  .delete(producutController.deleteProduct);
+  .get(authController.protect, producutController.findProductById)
+  .patch(authController.protect, producutController.updateProduct)
+  .delete(authController.protect, producutController.deleteProduct);
 
 router.route("/like/:id").post(authController.protect, likeController.like);
 router
@@ -31,5 +37,5 @@ router
 
 router
   .route("/getProductByProductType/:id")
-  .get(producutController.getProductByProductType);
+  .get(authController.protect, producutController.getProductByProductType);
 module.exports = router;
