@@ -5,7 +5,6 @@ const multerStorage = multer.diskStorage({
     cb(null, "Product-Images");
   },
   filename: (req, file, cb) => {
-    console.log(file.mimetype.split("/")[1]);
     const ext = file.mimetype.split("/")[1];
     cb(null, `product-${Date.now()}.${ext}`);
   },

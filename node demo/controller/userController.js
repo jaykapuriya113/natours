@@ -25,9 +25,7 @@ exports.createUsers = async (req, res, next) => {
   } catch (err) {
     if (err.name == "ValidationError")
       return next(new AppError(err.message, 404));
-    return next(
-      new AppError("ypur request is not fullfiled due to some error.", 404)
-    );
+    return next(new AppError("your request is not fullfiled.", 404));
   }
 };
 exports.loginUser = async (req, res, next) => {

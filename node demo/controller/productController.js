@@ -1,7 +1,6 @@
 const Product = require("../model/productModel");
 const AppError = require("../errorHandler/AppError");
 const ProductType = require("../model/productTypeModel");
-const asyncHandler = require("express-async-handler");
 exports.getAllProduct = async (req, res, next) => {
   try {
     const product = await Product.find().populate("productType");
@@ -26,6 +25,14 @@ exports.createProduct = async (req, res, next) => {
   try {
     const { productName, expireDate, price, productType, description } =
       req.body;
+    const existProducttype = await Product.find({
+      productName: req.body.productName,
+    });
+    console.log("existing", existProducttype);
+    if (existProducttype.length > 0) {
+      return next(new AppError("Already product is exist", 403));
+    }
+
     console.log(productName, expireDate, price, productType, description);
     let producttypeID;
     const producttype = await ProductType.findOne({ _id: productType });
@@ -52,15 +59,14 @@ exports.createProduct = async (req, res, next) => {
       });
     }
   } catch (err) {
-    return next(new AppError("Something went wrong", 500));
+    if (err.name == "ValidationError")
+      return next(new AppError(err.message, 404));
+    return next(new AppError("your request is not fullfiled.", 404));
   }
 };
 exports.updateProduct = async (req, res, next) => {
   try {
-    if (!req.params.id) {
-      return next(new AppError("Id is not exist", 400));
-    }
-    if (!req.body) {
+    if (Object.keys(req.body).length === 0) {
       return next(new AppError("body is not exist", 400));
     }
     if (req.params.id.length != 24) {
@@ -91,7 +97,7 @@ exports.findProductById = async (req, res, next) => {
       },
     });
   } catch (err) {
-    return next(new AppError({ err }, 500));
+    return next(new AppError("Invalid Prduct Id", 404));
   }
 };
 exports.deleteProduct = async (req, res, next) => {

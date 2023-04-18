@@ -18,9 +18,7 @@ router
 router
   .route("/mostRecentProduct")
   .get(authController.protect, producutController.mostRecentProduct);
-router
-  .route("/mostLikedProduct")
-  .get(authController.protect, likeController.MostLikedProduct);
+router.route("/mostLikedProduct").get(likeController.MostLikedProduct);
 router
   .route("/comment/:id")
   .post(authController.protect, commentController.comment);

@@ -13,7 +13,7 @@ const like = async (req, res, next) => {
     const product = await Product.findById(id);
 
     if (!product) {
-      return next(new AppError("product is not found", 404));
+      return next(new AppError("product not found", 404));
     }
 
     await DisLike.findOneAndDelete({

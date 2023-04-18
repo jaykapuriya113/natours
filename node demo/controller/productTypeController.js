@@ -1,7 +1,7 @@
-const product = require("../model/productModel");
+// const product = require("../model/productModel");
 const productType = require("../model/productTypeModel");
 const AppError = require("../errorHandler/AppError");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 const Product = require("../model/productModel");
 
 exports.createProductType = async (req, res, next) => {

@@ -19,7 +19,8 @@ exports.comment = async (req, res, next) => {
 
     if (created) {
       res.json({
-        msg: "Comment Added Successfully",
+        status: "Comment Added Successfully",
+        data: addComment,
       });
     }
   } catch (error) {
